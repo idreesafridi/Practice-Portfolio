@@ -6,6 +6,9 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import ProjectsSection from "@/components/ProjectsSection"; // Assumed import
+import ResumeSection from "@/components/ResumeSection"; // Assumed import
+
 
 function Router() {
   return (
@@ -23,6 +26,9 @@ function App() {
         <Navbar />
         <div className="flex-grow">
           <Router />
+          {/* Assuming these components are part of the Home page */}
+          <ResumeSection />
+          <ProjectsSection />
         </div>
         <Footer />
         <Toaster />
