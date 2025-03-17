@@ -4,11 +4,21 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import type { Project } from "@shared/schema";
-import { ExternalLink } from "lucide-react";
-import { useState, useMemo } from "react";
+import { ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useMemo, useCallback } from "react";
+import useEmblaCarousel from 'embla-carousel-react';
 
 export default function ProjectsSection() {
   const [activeFilter, setActiveFilter] = useState<string>("All");
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
 
   const { data: projects, isLoading } = useQuery<Project[]>({
     queryKey: ["/api/projects"],
@@ -82,53 +92,76 @@ export default function ProjectsSection() {
             ))}
           </div>
 
-          {/* Projects Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProjects.map((project) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Card className="overflow-hidden group">
-                  <div className="relative h-48">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-transform group-hover:scale-105"
-                    />
-                  </div>
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                      {project.title}
-                      {project.link && (
-                        <Button variant="ghost" size="icon" asChild>
-                          <a href={project.link} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="h-4 w-4" />
-                          </a>
-                        </Button>
-                      )}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground mb-4">{project.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.map((tag) => (
-                        <Badge 
-                          key={tag} 
-                          variant={tag === activeFilter ? "default" : "secondary"}
-                          className="cursor-pointer transition-all duration-300 hover:scale-105"
-                          onClick={() => setActiveFilter(tag)}
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+          {/* Projects Carousel */}
+          <div className="relative">
+            <div className="overflow-hidden" ref={emblaRef}>
+              <div className="flex">
+                {filteredProjects.map((project) => (
+                  <motion.div
+                    key={project.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_33.33%] pl-4"
+                  >
+                    <Card className="overflow-hidden group h-full">
+                      <div className="relative h-48">
+                        <img
+                          src={project.image}
+                          alt={project.title}
+                          className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                        />
+                      </div>
+                      <CardHeader>
+                        <CardTitle className="flex items-center justify-between">
+                          {project.title}
+                          {project.link && (
+                            <Button variant="ghost" size="icon" asChild>
+                              <a href={project.link} target="_blank" rel="noopener noreferrer">
+                                <ExternalLink className="h-4 w-4" />
+                              </a>
+                            </Button>
+                          )}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-muted-foreground mb-4">{project.description}</p>
+                        <div className="flex flex-wrap gap-2">
+                          {project.tags.map((tag) => (
+                            <Badge 
+                              key={tag} 
+                              variant={tag === activeFilter ? "default" : "secondary"}
+                              className="cursor-pointer transition-all duration-300 hover:scale-105"
+                              onClick={() => setActiveFilter(tag)}
+                            >
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Carousel Navigation Buttons */}
+            <Button
+              variant="outline"
+              size="icon"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 rounded-full bg-background/80 backdrop-blur-sm"
+              onClick={scrollPrev}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 rounded-full bg-background/80 backdrop-blur-sm"
+              onClick={scrollNext}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
           </div>
         </motion.div>
       </div>
