@@ -80,22 +80,22 @@ export default function ContactSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="max-w-3xl mx-auto"
+          className="max-w-4xl mx-auto"
         >
           <Card className="w-full transform transition-all duration-300 hover:shadow-lg">
             <CardHeader className="space-y-2">
               <motion.div variants={itemVariants}>
                 <CardTitle className="text-3xl font-bold text-center">Get in Touch</CardTitle>
-                <p className="text-muted-foreground text-center">
+                <p className="text-muted-foreground text-center text-lg mt-2">
                   Have a question or want to work together? Send me a message!
                 </p>
               </motion.div>
             </CardHeader>
-            <CardContent className="space-y-8">
+            <CardContent className="space-y-8 p-6 md:p-8">
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
-                  className="space-y-6"
+                  className="space-y-8"
                 >
                   <motion.div 
                     className="grid gap-6 md:grid-cols-2"
@@ -106,12 +106,12 @@ export default function ContactSection() {
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Name</FormLabel>
+                          <FormLabel className="text-base">Name</FormLabel>
                           <FormControl>
                             <Input 
                               placeholder="Your name" 
                               {...field} 
-                              className="transition-all duration-300 focus:scale-[1.02]"
+                              className="transition-all duration-300 focus:scale-[1.02] h-12 text-base"
                             />
                           </FormControl>
                           <FormMessage />
@@ -124,13 +124,13 @@ export default function ContactSection() {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email</FormLabel>
+                          <FormLabel className="text-base">Email</FormLabel>
                           <FormControl>
                             <Input 
                               type="email" 
                               placeholder="your@email.com" 
                               {...field} 
-                              className="transition-all duration-300 focus:scale-[1.02]"
+                              className="transition-all duration-300 focus:scale-[1.02] h-12 text-base"
                             />
                           </FormControl>
                           <FormMessage />
@@ -145,11 +145,11 @@ export default function ContactSection() {
                       name="message"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Message</FormLabel>
+                          <FormLabel className="text-base">Message</FormLabel>
                           <FormControl>
                             <Textarea
                               placeholder="Your message"
-                              className="min-h-[150px] resize-none transition-all duration-300 focus:scale-[1.01]"
+                              className="min-h-[200px] resize-none transition-all duration-300 focus:scale-[1.01] text-base"
                               {...field}
                             />
                           </FormControl>
@@ -166,7 +166,7 @@ export default function ContactSection() {
                     <Button
                       type="submit"
                       size="lg"
-                      className="w-full md:w-auto transform transition-all duration-300 hover:scale-105"
+                      className="w-full md:w-auto transform transition-all duration-300 hover:scale-105 text-lg px-8 py-6"
                       disabled={mutation.isPending}
                     >
                       {mutation.isPending ? "Sending..." : "Send Message"}
