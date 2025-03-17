@@ -82,7 +82,7 @@ export default function HeroSection() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <motion.img
-            src="/attached_assets/17030099bjjjj79718 ).jpg"
+            src="/assets/profile.jpg"
             alt="Profile"
             className="w-[300px] h-[300px] rounded-full object-cover shadow-xl"
             whileHover={{ scale: 1.05 }}
