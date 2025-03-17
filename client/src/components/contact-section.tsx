@@ -50,22 +50,46 @@ export default function ContactSection() {
     },
   });
 
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        when: "beforeChildren",
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      transition: { duration: 0.3 }
+    }
+  };
+
   return (
     <section id="contact" className="py-20 bg-muted/50">
       <div className="container px-4 md:px-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
           className="max-w-3xl mx-auto"
         >
-          <Card className="w-full">
+          <Card className="w-full transform transition-all duration-300 hover:shadow-lg">
             <CardHeader className="space-y-2">
-              <CardTitle className="text-3xl font-bold text-center">Get in Touch</CardTitle>
-              <p className="text-muted-foreground text-center">
-                Have a question or want to work together? Send me a message!
-              </p>
+              <motion.div variants={itemVariants}>
+                <CardTitle className="text-3xl font-bold text-center">Get in Touch</CardTitle>
+                <p className="text-muted-foreground text-center">
+                  Have a question or want to work together? Send me a message!
+                </p>
+              </motion.div>
             </CardHeader>
             <CardContent className="space-y-8">
               <Form {...form}>
@@ -73,7 +97,10 @@ export default function ContactSection() {
                   onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
                   className="space-y-6"
                 >
-                  <div className="grid gap-6 md:grid-cols-2">
+                  <motion.div 
+                    className="grid gap-6 md:grid-cols-2"
+                    variants={itemVariants}
+                  >
                     <FormField
                       control={form.control}
                       name="name"
@@ -81,7 +108,11 @@ export default function ContactSection() {
                         <FormItem>
                           <FormLabel>Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="Your name" {...field} />
+                            <Input 
+                              placeholder="Your name" 
+                              {...field} 
+                              className="transition-all duration-300 focus:scale-[1.02]"
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -95,42 +126,52 @@ export default function ContactSection() {
                         <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input type="email" placeholder="your@email.com" {...field} />
+                            <Input 
+                              type="email" 
+                              placeholder="your@email.com" 
+                              {...field} 
+                              className="transition-all duration-300 focus:scale-[1.02]"
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                  </div>
+                  </motion.div>
 
-                  <FormField
-                    control={form.control}
-                    name="message"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Message</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Your message"
-                            className="min-h-[150px] resize-none"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <motion.div variants={itemVariants}>
+                    <FormField
+                      control={form.control}
+                      name="message"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Message</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Your message"
+                              className="min-h-[150px] resize-none transition-all duration-300 focus:scale-[1.01]"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </motion.div>
 
-                  <div className="flex justify-end">
+                  <motion.div 
+                    className="flex justify-end"
+                    variants={itemVariants}
+                  >
                     <Button
                       type="submit"
                       size="lg"
-                      className="w-full md:w-auto"
+                      className="w-full md:w-auto transform transition-all duration-300 hover:scale-105"
                       disabled={mutation.isPending}
                     >
                       {mutation.isPending ? "Sending..." : "Send Message"}
                     </Button>
-                  </div>
+                  </motion.div>
                 </form>
               </Form>
             </CardContent>
