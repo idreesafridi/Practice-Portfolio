@@ -20,7 +20,7 @@ import { apiRequest } from "@/lib/queryClient";
 
 export default function ContactSection() {
   const { toast } = useToast();
-  
+
   const form = useForm<InsertContact>({
     resolver: zodResolver(insertContactSchema),
     defaultValues: {
@@ -52,51 +52,57 @@ export default function ContactSection() {
 
   return (
     <section id="contact" className="py-20 bg-muted/50">
-      <div className="container max-w-md">
+      <div className="container px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
+          className="max-w-3xl mx-auto"
         >
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-center">Get in Touch</CardTitle>
+          <Card className="w-full">
+            <CardHeader className="space-y-2">
+              <CardTitle className="text-3xl font-bold text-center">Get in Touch</CardTitle>
+              <p className="text-muted-foreground text-center">
+                Have a question or want to work together? Send me a message!
+              </p>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-8">
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
                   className="space-y-6"
                 >
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Your name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input type="email" placeholder="your@email.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
+                  <div className="grid gap-6 md:grid-cols-2">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Your name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input type="email" placeholder="your@email.com" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
                   <FormField
                     control={form.control}
                     name="message"
@@ -106,7 +112,7 @@ export default function ContactSection() {
                         <FormControl>
                           <Textarea
                             placeholder="Your message"
-                            className="min-h-[120px]"
+                            className="min-h-[150px] resize-none"
                             {...field}
                           />
                         </FormControl>
@@ -114,14 +120,17 @@ export default function ContactSection() {
                       </FormItem>
                     )}
                   />
-                  
-                  <Button
-                    type="submit"
-                    className="w-full"
-                    disabled={mutation.isPending}
-                  >
-                    {mutation.isPending ? "Sending..." : "Send Message"}
-                  </Button>
+
+                  <div className="flex justify-end">
+                    <Button
+                      type="submit"
+                      size="lg"
+                      className="w-full md:w-auto"
+                      disabled={mutation.isPending}
+                    >
+                      {mutation.isPending ? "Sending..." : "Send Message"}
+                    </Button>
+                  </div>
                 </form>
               </Form>
             </CardContent>
