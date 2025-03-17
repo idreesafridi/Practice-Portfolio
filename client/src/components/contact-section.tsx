@@ -80,7 +80,7 @@ export default function ContactSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="max-w-4xl mx-auto"
+          className="max-w-6xl mx-auto"
         >
           <Card className="w-full transform transition-all duration-300 hover:shadow-lg">
             <CardHeader className="space-y-2">
